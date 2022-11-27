@@ -1,0 +1,39 @@
+<script>
+	import Row from './row.svelte'
+	let name = 'world';
+	let email = ''
+	let goes_through_present = []
+	let start_times = []
+	let end_times = []
+	let num_rows = 0
+	let first_start_time = (new Date()).toISOString().slice(0, -8)
+	$: start_times = [].concat([first_start_time],end_times.slice(0,end_times.length - 1))
+	$: valid_email = email.includes('@')
+	$: if (!goes_through_present[goes_through_present.length - 1] && num_rows < 14) {
+		num_rows += 1
+	}
+	function save() {
+		//For Row in Rows, send record to server
+		//For Row in Rows, push record to cache
+	}
+</script>
+<input type="text" bind:value={email} placeholder='email'/>
+{#if email && !valid_email}
+{email} is not a valid address
+{/if}
+<button disabled={!valid_email}>
+	GO!
+</button>
+
+
+<hr>
+{#each [...Array(num_rows).keys()] as i}
+	<Row bind:goes_through_present={goes_through_present[i]} bind:start_time={start_times[i]} bind:end_time={end_times[i]}/>
+	{/each}
+
+
+<button style:color='red'>
+	<b>SAVE!</b>
+</button>
+
+{start_times}
